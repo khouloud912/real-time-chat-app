@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"npm run start --prefix apps/frontend\" \"npm run start --prefix apps/backend\""
+    "start": "concurrently \"npm run dev --prefix apps/frontend\" \"npm run start --prefix apps/backend\""
+
   },
   "keywords": [],
   "author": "",
