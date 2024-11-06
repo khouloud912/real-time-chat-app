@@ -6,11 +6,10 @@
     "esModuleInterop": true, // Enables interoperability between CommonJS and ES Modules
     "skipLibCheck": true, // Skip type checking of declaration files (.d.ts)
     "forceConsistentCasingInFileNames": true, // Ensure consistent file naming across the project
-    "rootDir": "./src" // Root directory for TypeScript source files
+    "rootDir": "./", // Root directory for TypeScript source files
+    "outDir": "./dist"
   },
-  "include": [
-    "src/**/*" // Include all files in the "src" directory
-  ],
+  "include": ["server.ts"], // Specify "server.ts" if that’s the only file
   "exclude": [
     "node_modules" // Exclude "node_modules" directory
   ]
