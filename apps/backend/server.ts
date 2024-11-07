@@ -10,8 +10,9 @@ const io = new Server(server);
 const PORT = process.env.PORT;
 
 connectDB();
-app.use('/auth', authRoutes);
+app.use("/auth", authRoutes);
 
+console.log("11111");
 app.get("/", (req, res) => {
   res.send("Chat Server Running");
 });
