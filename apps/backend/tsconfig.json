@@ -9,9 +9,7 @@
     "rootDir": "./src", // Root directory for TypeScript source files
     "outDir": "./dist"
   },
-  "include": [
-    "src/**/*" // Include all files in the "src" directory
-  ],
+  "include": ["server.ts"], // Specify "server.ts" if that’s the only file
   "exclude": [
     "node_modules" // Exclude "node_modules" directory
   ]
