@@ -1,6 +1,6 @@
 // src/routes/authRoutes.ts
 import express from "express";
-import { register } from "../controllers/authController";
+import { register, login, protectedRoute } from "../controllers/authController";
 import authMiddleware from "../middlewares/authMiddleware";
 
 const router = express.Router();
