@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { LogoutOptions, useAuth0 } from '@auth0/auth0-react';
+import { register } from '../api/authAPI';
 
 interface AuthContextProps {
   login: () => Promise<void>;
@@ -25,7 +26,7 @@ export const AuthProvider = ({ children }: any) => {
   const login = async () => {
     await loginWithRedirect({
       appState: {
-        returnTo: '/home',
+        returnTo: '/home', // The URL to redirect to after login
       },
     });
   };
@@ -35,7 +36,7 @@ export const AuthProvider = ({ children }: any) => {
   };
 
   const getToken = async () => {
-    // Check if we already have an access token
+    // Get the access token immediately if available
     if (accessToken) {
       return accessToken;
     }
@@ -49,16 +50,35 @@ export const AuthProvider = ({ children }: any) => {
     }
   };
 
-  // Optionally, you can use useEffect to refresh the token periodically
   useEffect(() => {
+    // Refresh the token every 10 minutes if authenticated
     const interval = setInterval(() => {
       if (isAuthenticated) {
         getToken(); // Refresh the token
       }
     }, 600000); // Refresh every 10 minutes (600000 ms)
 
-    return () => clearInterval(interval);
+    return () => clearInterval(interval); // Cleanup on unmount
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    const registerUser = async () => {
+      if (user) {
+        try {
+          // Log user details to ensure you are sending the right data to register
+          console.log('Registering user:', user);
+          const response = await register(user); // Assuming this is the right registration API
+          console.log('User registered:', response);
+        } catch (error) {
+          console.error('Error registering user:', error);
+        }
+      }
+    };
+
+    if (user) {
+      registerUser();
+    }
+  }, [user]); // Only run when the user data is available
 
   return (
     <AuthContext.Provider
@@ -82,6 +102,7 @@ export const useAuth = () => {
   }
   return context;
 };
+
 
 // import { LogoutOptions, useAuth0 } from '@auth0/auth0-react';
 
