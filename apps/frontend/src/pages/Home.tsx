@@ -1,9 +1,9 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import Sidebar from '../components/Sidebar';
+import Sidebar from '../components/Sidebars/Sidebar';
 import { useState } from 'react';
-import ContactSidebar from '../components/ContactSidebar';
-import MeetingSidebar from '../components/MeetingSidebar';
-import ChatComponent from '../components/ChatComponent';
+import ContactSidebar from '../components/Sidebars/ContactSidebar';
+import MeetingSidebar from '../components/Sidebars/MeetingSidebar';
+import ChatComponent from '../components/Chat/ChatComponent';
 
 const Home = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -37,9 +37,9 @@ const Home = () => {
           <MeetingSidebar onContactClick={handleContactClick} />
         </div>
       )}
-      <div className={`flex-1 ${chatVisible ? 'block' : 'hidden'} `}>
-        <ChatComponent />
-      </div>
+      {/* <div className={`flex-1 ${chatVisible ? 'block' : 'hidden'} `}> */}
+      <ChatComponent />
+      {/* </div> */}
     </div>
   );
 };

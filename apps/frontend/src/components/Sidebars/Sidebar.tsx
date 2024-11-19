@@ -4,7 +4,7 @@ import {
   ShareAltOutlined,
   ContactsOutlined,
 } from '@ant-design/icons';
-import ToggleSwitch from './ToggleSwitch';
+import ToggleSwitch from '../ToggleSwitch';
 import { useState } from 'react';
 
 interface SidebarProps {

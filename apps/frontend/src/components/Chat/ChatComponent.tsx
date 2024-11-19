@@ -1,21 +1,22 @@
 import { PhoneOutlined, VideoCameraOutlined } from '@ant-design/icons';
-import { ChatInput } from './ChatInput';
+import { ChatInput } from '../Chat/ChatInput'
 import { ChatMessage } from './ChatMessage';
+import { useAuth } from '../../auth/authContext';
 
 const ChatComponent = () => {
-  const user = {
-    picture: 'https://via.placeholder.com/50',
-    name: 'John Doe',
-  };
+  // const user = {
+  //   picture: 'https://via.placeholder.com/50',
+  //   name: 'John Doe',
+  // };
 
-  const isAuthenticated = true;
+  const {isLoggedIn, user} = useAuth();
 
   return (
     <div className="flex flex-col h-full w-full ml-8">
       {/* Navbar */}
       <div className="h-16 flex items-center justify-between bg-white dark:bg-gray-800 shadow-md px-4">
         <div className="flex items-center h-full">
-          {isAuthenticated && (
+          {isLoggedIn() && user  (
             <>
               <img
                 src={user.picture}
