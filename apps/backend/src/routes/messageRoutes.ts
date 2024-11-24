@@ -4,7 +4,7 @@ import { sendMessage, getMessages, markMessageAsRead, typingIndicator, deleteMes
 const router = express.Router();
 
 // Save a new message
-router.post("/messages", sendMessage);
+router.post("/newMessage", sendMessage);
 router.get("/messages/:roomId", getMessages);
 router.get("/messages/:roomId", getMessages);
 router.post("/messages/typing", typingIndicator);

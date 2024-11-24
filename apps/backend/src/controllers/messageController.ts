@@ -3,23 +3,20 @@ import { io } from "../../server";
 
 // Save a new message
 export const sendMessage = async (req: any, res: any) => {
-  const { senderId, receiverId, content } = req.body;
-
+  const { senderId, receiverId, message } = req.body;
   try {
     // Save the message to the database
-    const message = new Message({
+    const messageData = new Message({
       senderId,
       receiverId,
-      content,
+      message,
       createdAt: new Date(),
     });
 
-    await message.save();
-
+    await messageData.save();
     // Emit the message in real-time to the receiver
-    io.to(receiverId).emit("receiveMessage", message);
-
-    return res.status(201).json(message);
+    io.emit("receiveMessage", message);
+    return res.status(201).json(messageData);
   } catch (error) {
     console.error("Error sending message:", error);
     return res.status(500).json({ message: "Failed to send message." });

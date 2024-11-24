@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { LogoutOptions, useAuth0 } from '@auth0/auth0-react';
-import { register } from '../api/authAPI';
+import { register } from '../api/authApi';
 
 interface AuthContextProps {
   login: () => Promise<void>;
