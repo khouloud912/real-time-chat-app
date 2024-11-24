@@ -6,6 +6,7 @@ import {
 } from '@ant-design/icons';
 import ToggleSwitch from '../ToggleSwitch';
 import { useState } from 'react';
+import { useAuth } from '../../auth/authContext';
 
 interface SidebarProps {
   toggleDarkMode: () => void;
@@ -18,6 +19,8 @@ const Sidebar = ({ toggleDarkMode, onHomeClick }: SidebarProps) => {
     setDarkMode(!darkMode);
     toggleDarkMode();
   };
+
+  const { user } = useAuth();
 
   return (
     <div
@@ -64,7 +67,7 @@ const Sidebar = ({ toggleDarkMode, onHomeClick }: SidebarProps) => {
         {/* Avatar */}
         <div className="flex flex-col items-center p-2 leading-tight transition-all rounded-lg text-center">
           <img
-            src="https://tecdn.b-cdn.net/img/new/avatars/2.webp"
+            src={user?.picture}
             className="w-24 md:w-32 rounded-full"
             alt="Avatar"
           />

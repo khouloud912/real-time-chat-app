@@ -24,35 +24,40 @@ export const ChatInput = ({ onSendMessage }: any) => {
 
   return (
     <div className="flex items-center p-2 sm:p-4 bg-white dark:bg-gray-800 border-t dark:border-gray-700">
-      <div className="relative flex items-center flex-1">
+      {/* Input Container */}
+      <div className="flex items-center w-full rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2">
+        {/* Emoji Picker Icon */}
+        <SmileOutlined
+          onClick={() => setShowEmojiPicker((prev) => !prev)}
+          className="text-gray-500 dark:text-gray-400 cursor-pointer text-xl mr-3"
+        />
+
+        {/* Input Field */}
         <input
           type="text"
-          className="flex-1 p-2 sm:p-3 border border-gray-300 dark:border-gray-700 rounded-full dark:bg-gray-900 dark:text-white pl-10 text-sm sm:text-base" // Adjusted padding and text size
+          className="flex-1 bg-transparent border-none outline-none text-sm sm:text-base dark:text-white"
           placeholder="Type a message..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
         />
-        <SmileOutlined
-          onClick={() => setShowEmojiPicker((prev) => !prev)}
-          className="absolute left-2 text-gray-500 dark:text-gray-400 cursor-pointer text-lg sm:text-xl"
-        />
-        <CameraOutlined
-          className="absolute right-12 text-gray-500 dark:text-gray-400 cursor-pointer text-lg sm:text-xl"
-        />
-        <PaperClipOutlined
-          className="absolute right-6 text-gray-500 dark:text-gray-400 cursor-pointer text-lg sm:text-xl"
-        />
 
-        {showEmojiPicker && (
-          <div className="absolute bottom-full left-0 mb-2 sm:mb-3">
-            <EmojiPicker onEmojiClick={handleEmojiClick} />
-          </div>
-        )}
+        {/* File Attachment Icon */}
+        <PaperClipOutlined className="text-gray-500 dark:text-gray-400 cursor-pointer text-xl mx-2" />
+
+        {/* Camera Icon */}
+        <CameraOutlined className="text-gray-500 dark:text-gray-400 cursor-pointer text-xl mx-2" />
+
+        {/* Audio Icon */}
+        <AudioOutlined className="text-gray-500 dark:text-gray-400 cursor-pointer text-xl ml-2" />
       </div>
-      <AudioOutlined
-        className="text-gray-500 dark:text-gray-400 cursor-pointer ml-2 sm:ml-3 text-lg sm:text-xl"
-      />
+
+      {/* Emoji Picker */}
+      {showEmojiPicker && (
+        <div className="absolute bottom-full left-0 mb-2 sm:mb-3">
+          <EmojiPicker onEmojiClick={handleEmojiClick} />
+        </div>
+      )}
     </div>
   );
 };

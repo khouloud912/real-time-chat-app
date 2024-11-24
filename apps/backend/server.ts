@@ -15,10 +15,7 @@ io.on("connection", (socket) => {
 
   // Listen for an event from the client
   socket.on("sendMessage", (data) => {
-    console.log("Message received:", data);
-
-    // Broadcast the message to all other connected clients
-    socket.broadcast.emit("receiveMessage", data);
+    console.log("Message :", data);
   });
 
   // Handle client disconnection
