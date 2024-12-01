@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import UserTab from './UserTab';
 import { SearchOutlined } from '@ant-design/icons';
 import { useAuth } from '../../../auth/authContext';
-import { ChatTab } from './ChatTab';
+import ChatTab from './ChatTab';
 
 const ContactSidebar = ({ onContactClick }: any) => {
   const [activeTab, setActiveTab] = useState<'Users' | 'Chats' | 'Groups'>(
@@ -63,7 +63,7 @@ const ContactSidebar = ({ onContactClick }: any) => {
       {activeTab === 'Users' && (
         <UserTab user={user} onContactClick={onContactClick} />
       )}
-      {activeTab === 'Chats' && <ChatTab />}
+      {activeTab === 'Chats' && <ChatTab onContactClick={onContactClick} />}
     </div>
   );
 };

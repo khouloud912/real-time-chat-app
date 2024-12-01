@@ -13,9 +13,8 @@ const UserTab = ({ user, onContactClick }: any) => {
       try {
         const data = await getUsers();
         const filteredUsers = data.filter(
-          (filter: any) => filter.email !== user.email
+          (filter: any) => filter.email !== user?.email
         );
-        console.log('data', data);
         setUsers(filteredUsers);
       } catch (error) {
         console.error('Error fetching users:', error);
