@@ -9,8 +9,9 @@ const ChatComponent = () => {
   //   name: 'John Doe',
   // };
 
+  const dummyReceiverId = 'test-user-123';
   const { isLoggedIn, user } = useAuth();
-  const name = user?.email.split('@')[0].replace(/\./g, ' ');
+
   return (
     <div className="flex flex-col h-full w-full ml-8">
       {/* Navbar */}
@@ -19,13 +20,20 @@ const ChatComponent = () => {
           {isLoggedIn() && (
             <>
               <img
-                src={user.picture}
-                alt={name}
-                className="w-10 h-10 rounded-full object-cover"
+                src={
+                  user.picture ||
+                  `https://www.gravatar.com/avatar/${user.email}?d=identicon`
+                }
+                alt={user.name || 'Default User'}
+                className="w-10 h-10 rounded-full object-cover mr-3"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src =
+                    'https://www.gravatar.com/avatar/?d=mp';
+                }}
               />
               <div className="ml-2">
                 <span className="block text-sm font-semibold dark:text-white">
-                  {name}
+                  {user.name}
                 </span>
                 <span className="block text-xs ml-0 text-green-500">
                   Online
@@ -40,8 +48,8 @@ const ChatComponent = () => {
         </div>
       </div>
 
-      <ChatMessage />
-      <ChatInput />
+      <ChatMessage user={user} />
+      <ChatInput senderId={user?.sub} receiverId={dummyReceiverId} />
     </div>
   );
 };

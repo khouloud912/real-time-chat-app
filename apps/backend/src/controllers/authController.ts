@@ -8,8 +8,6 @@ export const register = async (req: any, res: any) => {
     if (!auth0User) {
       return res.status(400).json({ message: "Invalid or missing user data." });
     }
-
-    console.log("auth0User", auth0User);
     // Use upsert to avoid potential race conditions
     const user = await User.findOneAndUpdate(
       { auth0Id: auth0User.sub },
@@ -22,8 +20,6 @@ export const register = async (req: any, res: any) => {
       },
       { upsert: true, new: true } // Upsert ensures atomic operation
     );
-
-    console.log("user", user);
     // Respond with user data
     res.status(201).json(user);
   } catch (error) {

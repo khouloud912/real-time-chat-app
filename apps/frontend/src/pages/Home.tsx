@@ -1,8 +1,8 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import Sidebar from '../components/Sidebars/Sidebar';
 import { useState } from 'react';
-import ContactSidebar from '../components/Sidebars/ContactSidebar';
-import MeetingSidebar from '../components/Sidebars/MeetingSidebar';
+import ContactSidebar from '../components/Sidebars/contacts/ContactSidebar';
+import MeetingSidebar from '../components/Sidebars/meetings/MeetingSidebar';
 import ChatComponent from '../components/Chat/ChatComponent';
 
 const Home = () => {

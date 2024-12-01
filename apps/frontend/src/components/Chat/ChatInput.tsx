@@ -6,14 +6,20 @@ import {
   PaperClipOutlined,
   AudioOutlined,
 } from '@ant-design/icons';
+import { addMessage } from '../../api/messageApi';
 
-export const ChatInput = ({ onSendMessage }: any) => {
+export const ChatInput = ({ senderId, receiverId }: any) => {
   const [message, setMessage] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const handleSendMessage = () => {
     if (message.trim()) {
-      onSendMessage(message);
+      const messageData = {
+        senderId,
+        receiverId,
+        message,
+      };
+      addMessage(messageData);
       setMessage(''); // Clear input after sending
     }
   };

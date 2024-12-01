@@ -64,12 +64,20 @@ const Sidebar = ({ toggleDarkMode, onHomeClick }: SidebarProps) => {
           <ToggleSwitch darkMode={darkMode} onToggle={handleToggleDarkMode} />
         </div>
 
-        {/* Avatar */}
+        {/* Avatar */} 
+        
         <div className="flex flex-col items-center p-2 leading-tight transition-all rounded-lg text-center">
           <img
-            src={user?.picture}
-            className="w-24 md:w-32 rounded-full"
-            alt="Avatar"
+            src={
+              user?.picture ||
+              `https://www.gravatar.com/avatar/${user?.email}?d=identicon`
+            }
+            alt={user?.name}
+            className="w-10 h-10 rounded-full object-cover mr-3"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src =
+                'https://www.gravatar.com/avatar/?d=mp';
+            }}
           />
         </div>
       </nav>
