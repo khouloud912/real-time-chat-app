@@ -1,21 +1,18 @@
 import { useEffect, useState } from 'react';
 import { getUsers } from '../../../api/userApi';
+import { useAuth } from '../../../auth/authContext';
 
-const UserTab = ({ user, onContactClick }: any) => {
+const UserTab = ({onContactClick }: any) => {
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-
-  console.log('user', user);
+  const { getToken } = useAuth();
 
   useEffect(() => {
     const fetchUsers = async () => {
       setLoading(true);
       try {
-        const data = await getUsers();
-        const filteredUsers = data.filter(
-          (filter: any) => filter.email !== user?.email
-        );
-        setUsers(filteredUsers);
+        const data = await getUsers(getToken);
+        setUsers(data);
       } catch (error) {
         console.error('Error fetching users:', error);
       } finally {

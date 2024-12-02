@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react';
-import { getUsers, getUsersWithChats } from '../../../api/userApi';
+import { getUsersWithChats } from '../../../api/userApi';
+import { useAuth } from '../../../auth/authContext';
 
 const ChatTab = ({ onContactClick }: any) => {
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const { getToken } = useAuth();
 
   useEffect(() => {
     const fetchUsers = async () => {
       setLoading(true);
       try {
-        const data = await getUsersWithChats();
+        const data = await getUsersWithChats(getToken);
         console.log('data', data);
         setUsers(data);
       } catch (error) {

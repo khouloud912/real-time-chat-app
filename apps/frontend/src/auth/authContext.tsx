@@ -35,23 +35,29 @@ export const AuthProvider = ({ children }: any) => {
     logout({ returnTo: window.location.origin } as LogoutOptions);
   };
 
+  const isTokenExpired = (token: string) => {
+    if (!token) return true;
+    const payload = JSON.parse(atob(token.split('.')[1])); // Decode the JWT
+    const expirationTime = payload.exp * 1000; // Convert expiration time to milliseconds
+    return expirationTime < Date.now(); // Check if the token has expired
+  };
+
   const getToken = async () => {
-    // Get the access token immediately if available
-    if (accessToken) {
+    if (accessToken && !isTokenExpired(accessToken)) {
       return accessToken;
     }
 
     try {
       const token = await getAccessTokenSilently();
-      setAccessToken(token); // Store the token in memory
+      setAccessToken(token); // Store the new token in memory
       return token;
     } catch (error) {
       console.error('Error getting token: ', error);
+      return undefined;
     }
   };
 
   useEffect(() => {
-    // Refresh the token every 10 minutes if authenticated
     const interval = setInterval(() => {
       if (isAuthenticated) {
         getToken(); // Refresh the token
@@ -102,49 +108,3 @@ export const useAuth = () => {
   }
   return context;
 };
-
-
-// import { LogoutOptions, useAuth0 } from '@auth0/auth0-react';
-
-// export const useAuth = () => {
-//   const {
-//     loginWithRedirect,
-//     logout,
-//     getAccessTokenSilently,
-//     isAuthenticated,
-//     user,
-//   } = useAuth0();
-
-//   const login = async () => {
-//     await loginWithRedirect({
-//       appState: {
-//         returnTo: '/home',
-//       },
-//     });
-//   };
-
-//   const logoutWithRedirect = () => {
-//     logout({ returnTo: window.location.origin } as LogoutOptions);
-//   };
-
-//   const getToken = async () => {
-//     try {
-//       const token = await getAccessTokenSilently();
-//       return token;
-//     } catch (error) {
-//       console.error('Error getting token: ', error);
-//     }
-//   };
-
-//   const isLoggedIn = () => {
-//     return isAuthenticated;
-//   };
-
-//   return {
-//     login,
-//     logout: logoutWithRedirect,
-//     getToken,
-//     isLoggedIn,
-//     user,
-//   };
-// };

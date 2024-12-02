@@ -4,7 +4,15 @@ import User from "../models/User";
 // Fetch all users
 export const getUsers = async (req: any, res: any) => {
   try {
-    const users = await User.find({});
+    const userId = req.auth.sub;
+    if (!userId) {
+      return res
+        .status(400)
+        .json({ error: "User ID is missing from the token" });
+    }
+    const users = await User.find({
+      auth0Id: { $ne: userId },
+    });
     res.status(200).json(users);
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -35,7 +43,6 @@ export const getUsersWithChats = async (req: any, res: any) => {
   try {
     // Extract userId from the authenticated user's token
     const userId = req.auth.sub;
-    console.log("iddd", userId);
     if (!userId) {
       return res
         .status(400)

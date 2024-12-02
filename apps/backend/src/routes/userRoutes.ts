@@ -8,8 +8,8 @@ import authMiddleware from "../middlewares/authMiddleware";
 
 const router = express.Router();
 
-router.get("/", getUsers);
-router.get("/:id", getUserById);
+router.get("/", authMiddleware, getUsers);
 router.get("/chats", authMiddleware, getUsersWithChats);
+router.get("/:id", getUserById);
 
 export default router;
