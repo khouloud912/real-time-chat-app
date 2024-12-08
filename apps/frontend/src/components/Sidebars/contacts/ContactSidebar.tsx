@@ -1,28 +1,22 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import UserTab from './UserTab';
-import { SearchOutlined } from '@ant-design/icons';
 import { useAuth } from '../../../auth/authContext';
 import ChatTab from './ChatTab';
+import SearchInput from '../Search';
 
 const ContactSidebar = ({ onContactClick }: any) => {
   const [activeTab, setActiveTab] = useState<'Users' | 'Chats' | 'Groups'>(
     'Users'
   );
-  const { user } = useAuth();
+  const [searchQuery, setSearchQuery] = useState<string>(''); // State for search query
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
 
   return (
     <div className="flex flex-col h-[50vh] sm:h-[50vh] lg:h-[50vh] w-64 sm:w-2/3 md:w-72 bg-white dark:bg-gray-800 shadow-xl rounded-b-lg">
       {/* Search Input */}
-      <div className="relative mt-3 px-4">
-        <input
-          type="search"
-          id="default-search"
-          className="block w-full h-7 py-2 pl-9 pr-4 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Search..."
-          required
-        />
-        <SearchOutlined className="absolute top-1/2 transform -translate-y-1/2 left-7 text-gray-400 dark:text-gray-300" />
-      </div>
+      <SearchInput query={searchQuery} onSearch={handleSearch} />
 
       {/* Tabs */}
 
@@ -61,9 +55,11 @@ const ContactSidebar = ({ onContactClick }: any) => {
 
       {/* Tab Content */}
       {activeTab === 'Users' && (
-        <UserTab user={user} onContactClick={onContactClick} />
+        <UserTab onContactClick={onContactClick} searchQuery={searchQuery} />
       )}
-      {activeTab === 'Chats' && <ChatTab onContactClick={onContactClick} />}
+      {activeTab === 'Chats' && (
+        <ChatTab onContactClick={onContactClick} searchQuery={searchQuery} />
+      )}
     </div>
   );
 };

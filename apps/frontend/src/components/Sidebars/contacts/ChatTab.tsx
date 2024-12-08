@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { getUsersWithChats } from '../../../api/userApi';
 import { useAuth } from '../../../auth/authContext';
 
-const ChatTab = ({ onContactClick }: any) => {
+const ChatTab = ({ onContactClick, searchQuery }: any) => {
   const [users, setUsers] = useState<any[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const { getToken } = useAuth();
 
@@ -14,6 +15,7 @@ const ChatTab = ({ onContactClick }: any) => {
         const data = await getUsersWithChats(getToken);
         console.log('data', data);
         setUsers(data);
+        setFilteredUsers(data);
       } catch (error) {
         console.error('Error fetching users:', error);
       } finally {
@@ -23,6 +25,17 @@ const ChatTab = ({ onContactClick }: any) => {
     fetchUsers();
   }, []);
 
+  useEffect(() => {
+    if (searchQuery.trim() === '') {
+      setFilteredUsers(users);
+    } else {
+      setFilteredUsers(
+        users.filter((user) =>
+          user.displayName.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      );
+    }
+  }, [searchQuery, users]);
   if (loading) {
     return (
       <div className="text-center text-gray-500 dark:text-gray-400">
@@ -31,7 +44,7 @@ const ChatTab = ({ onContactClick }: any) => {
     );
   }
 
-  if (users.length === 0) {
+  if (filteredUsers.length === 0) {
     return (
       <div className="text-center text-gray-500 dark:text-gray-400">
         No users available.
@@ -41,7 +54,7 @@ const ChatTab = ({ onContactClick }: any) => {
 
   return (
     <div className="flex-1 flex flex-col p-2 space-y-2 overflow-auto">
-      {users?.map((user) => (
+      {filteredUsers?.map((user) => (
         <div
           key={user._id}
           onClick={() => onContactClick(user)}
