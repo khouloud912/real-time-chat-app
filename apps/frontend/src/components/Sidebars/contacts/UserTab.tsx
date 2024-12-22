@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { getUsers } from '../../../api/userApi';
-import { useAuth } from '../../../auth/authContext';
+import { useAuth } from '../../../context/AuthContext';
+import { useSelectedUser } from '../../../context/SelectedUserContext';
 
-const UserTab = ({ onContactClick, searchQuery }: any) => {
+const UserTab = ({searchQuery }: any) => {
   const [users, setUsers] = useState<any[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const { getToken } = useAuth();
+  const { setSelectedUser } = useSelectedUser();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -60,7 +62,7 @@ const UserTab = ({ onContactClick, searchQuery }: any) => {
         {filteredUsers.map((user) => (
           <div
             key={user._id}
-            onClick={() => onContactClick(user)}
+            onClick={() => setSelectedUser(user)}
             className="flex items-start bg-gray-100 dark:bg-gray-700 rounded-lg p-2 border-b dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
           >
             <img

@@ -1,4 +1,4 @@
-import { useAuth } from '../../auth/authContext';
+import { useAuth } from '../../context/AuthContext';
 
 const LogoutButton = () => {
   const { logout } = useAuth();

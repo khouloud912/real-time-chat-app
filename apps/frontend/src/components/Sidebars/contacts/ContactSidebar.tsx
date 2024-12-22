@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import UserTab from './UserTab';
-import { useAuth } from '../../../auth/authContext';
 import ChatTab from './ChatTab';
 import SearchInput from '../Search';
 
-const ContactSidebar = ({ onContactClick }: any) => {
+const ContactSidebar = () => {
   const [activeTab, setActiveTab] = useState<'Users' | 'Chats' | 'Groups'>(
     'Users'
   );
@@ -54,12 +53,8 @@ const ContactSidebar = ({ onContactClick }: any) => {
       </div>
 
       {/* Tab Content */}
-      {activeTab === 'Users' && (
-        <UserTab onContactClick={onContactClick} searchQuery={searchQuery} />
-      )}
-      {activeTab === 'Chats' && (
-        <ChatTab onContactClick={onContactClick} searchQuery={searchQuery} />
-      )}
+      {activeTab === 'Users' && <UserTab searchQuery={searchQuery} />}
+      {activeTab === 'Chats' && <ChatTab searchQuery={searchQuery} />}
     </div>
   );
 };

@@ -7,10 +7,13 @@ import {
   SendOutlined,
   StopOutlined,
   DeleteOutlined,
+  FilePdfOutlined,
+  CloseCircleFilled,
 } from '@ant-design/icons';
 import EmojiPicker from 'emoji-picker-react';
-import { addMessage } from '../../api/messageApi';
+
 import WaveSurfer from 'wavesurfer.js';
+import { addMessage } from '../../api/messageApi';
 
 export const ChatInput = ({ senderId, receiverId }: any) => {
   const [message, setMessage] = useState('');
@@ -18,6 +21,9 @@ export const ChatInput = ({ senderId, receiverId }: any) => {
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
   const [audioData, setAudioData] = useState<Blob | null>(null);
+  const [selectedImage, setSelectedImage] = useState<any | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
   const timerRef = useRef<number | null>(null);
   const waveRef = useRef<HTMLDivElement>(null);
   const wavesurferRef = useRef<any>(null);
@@ -26,14 +32,39 @@ export const ChatInput = ({ senderId, receiverId }: any) => {
 
   const handleSendMessage = () => {
     if (message.trim()) {
-      const messageData = { senderId, receiverId, message };
+      const messageData: any = { senderId, receiverId, message };
+      if (selectedFile) messageData.file = selectedFile;
+      if (selectedImage) messageData.image = selectedImage.url;
+
       addMessage(messageData);
       setMessage('');
     }
   };
 
-  const handleEmojiClick = (event: any, emojiObject: any) => {
+  const handleEmojiClick = (emojiObject: any) => {
+    console.log('emojiObject', emojiObject);
+
     setMessage((prevMessage) => prevMessage + emojiObject.emoji);
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    console.log('file', file);
+
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const handleImageChange = (event: any) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setSelectedImage({ name: file.name, url: reader.result });
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const startRecording = () => {
@@ -166,12 +197,52 @@ export const ChatInput = ({ senderId, receiverId }: any) => {
             onClick={() => setShowEmojiPicker((prev) => !prev)}
             className="text-gray-500 dark:text-gray-400 cursor-pointer text-xl mr-3"
           />
+          {selectedFile && (
+            <div className="relative flex items-center mt-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">
+              {/* Close Button */}
+              <CloseCircleFilled
+                onClick={() => setSelectedFile(null)}
+                className="absolute top-0 right-0 text-black-500 text-sm cursor-pointer hover:text-black-700 transition-all duration-200"
+              />
 
+              {/* PDF Icon and File Name */}
+              <div className="flex items-center space-x-2">
+                <FilePdfOutlined className="text-pink-500 text-lg" />
+                <span className="text-gray-700 dark:text-gray-300 text-sm truncate">
+                  {selectedFile.name}
+                </span>
+              </div>
+            </div>
+          )}
+
+          {selectedImage && (
+            <div className="relative flex items-center mt-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">
+              {/* Close Button */}
+              <CloseCircleFilled
+                onClick={() => setSelectedImage(null)}
+                className="absolute top-0 right-0 text-black-500 text-sm cursor-pointer hover:text-black-700 transition-all duration-200"
+              />
+
+              {/* Image Preview and File Name */}
+              <div className="flex items-center space-x-4">
+                <img
+                  src={selectedImage.url}
+                  alt={selectedImage.name}
+                  className="w-10 h-10 object-cover rounded-lg"
+                />
+                <span className="text-gray-700 dark:text-gray-300 text-sm truncate">
+                  {selectedImage.name}
+                </span>
+              </div>
+            </div>
+          )}
           {/* Input Field */}
           <input
             type="text"
             className="flex-1 bg-transparent border-none outline-none text-sm sm:text-base dark:text-white"
-            placeholder="Type a message..."
+            placeholder={
+              selectedFile || selectedImage ? '' : 'Type a message...'
+            }
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
@@ -190,8 +261,9 @@ export const ChatInput = ({ senderId, receiverId }: any) => {
           <input
             id="file-upload"
             type="file"
+            accept="application/pdf"
             className="hidden"
-            onChange={() => {}}
+            onChange={handleFileChange}
           />
 
           {/* Camera Icon */}
@@ -204,7 +276,7 @@ export const ChatInput = ({ senderId, receiverId }: any) => {
             accept="image/*"
             capture="environment"
             className="hidden"
-            onChange={() => {}}
+            onChange={handleImageChange}
           />
         </div>
       )}

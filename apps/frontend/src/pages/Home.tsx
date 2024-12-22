@@ -33,7 +33,7 @@ const Home = () => {
       </div>
       {sidebarsVisible && (
         <div className=" flex flex-col ml-16">
-          <ContactSidebar onContactClick={handleContactClick} />
+          <ContactSidebar />
           <MeetingSidebar onContactClick={handleContactClick} />
         </div>
       )}

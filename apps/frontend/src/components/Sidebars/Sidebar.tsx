@@ -6,7 +6,7 @@ import {
 } from '@ant-design/icons';
 import ToggleSwitch from '../ToggleSwitch';
 import { useState } from 'react';
-import { useAuth } from '../../auth/authContext';
+import { useAuth } from '../../context/AuthContext';
 
 interface SidebarProps {
   toggleDarkMode: () => void;
@@ -64,8 +64,8 @@ const Sidebar = ({ toggleDarkMode, onHomeClick }: SidebarProps) => {
           <ToggleSwitch darkMode={darkMode} onToggle={handleToggleDarkMode} />
         </div>
 
-        {/* Avatar */} 
-        
+        {/* Avatar */}
+
         <div className="flex flex-col items-center p-2 leading-tight transition-all rounded-lg text-center">
           <img
             src={

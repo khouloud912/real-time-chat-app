@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getUsersWithChats } from '../../../api/userApi';
-import { useAuth } from '../../../auth/authContext';
+import { useAuth } from '../../../context/AuthContext';
 
 const ChatTab = ({ onContactClick, searchQuery }: any) => {
   const [users, setUsers] = useState<any[]>([]);
