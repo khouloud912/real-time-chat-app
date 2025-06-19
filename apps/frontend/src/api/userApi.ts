@@ -1,23 +1,34 @@
 import axios from 'axios';
-const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL; // Backend API base URL
+import { useQuery } from '@tanstack/react-query';
+import { useAuth } from '../contexts/authContext.tsx';
 
-export const getUsers = async (getToken: any) => {
-  try {
+const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL;
+
+export const useUsers = (enabled: boolean = true) => {
+  const { getToken } = useAuth();
+
+  const getUsers = async () => {
     const token = await getToken();
+    console.log('token', token);
     const response = await axios.get(`${API_BASE_URL}/users/`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
     return response.data;
-  } catch (error) {
-    console.error('get users  error:', error);
-    throw error;
-  }
+  };
+
+  return useQuery({
+    queryKey: ['users'],
+    queryFn: getUsers,
+    enabled,
+  });
 };
 
-export const getUsersWithChats = async (getToken: any) => {
-  try {
+export const useUsersWithChats = (enabled: boolean = true) => {
+  const { getToken } = useAuth();
+
+  const getUsersWithChats = async () => {
     const token = await getToken();
     const response = await axios.get(`${API_BASE_URL}/users/chats`, {
       headers: {
@@ -25,8 +36,11 @@ export const getUsersWithChats = async (getToken: any) => {
       },
     });
     return response.data;
-  } catch (error) {
-    console.error('get users  error:', error);
-    throw error;
-  }
+  };
+
+  return useQuery({
+    queryKey: ['users', 'chats'],
+    queryFn: getUsersWithChats,
+    enabled,
+  });
 };

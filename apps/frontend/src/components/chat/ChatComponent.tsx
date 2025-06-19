@@ -1,16 +1,14 @@
-import { PhoneOutlined, VideoCameraOutlined } from '@ant-design/icons';
-import { ChatInput } from '../Chat/ChatInput';
+import { Phone, Video } from 'lucide-react';
+import { ChatInput } from '../chat/ChatInput';
 import { ChatMessage } from './ChatMessage';
-import { useAuth } from '../../auth/authContext';
+import { useAuth } from '../../contexts/authContext.tsx';
+import {useSelectedChat} from "../../contexts/selectedChatContext.tsx";
 
 const ChatComponent = () => {
-  // const user = {
-  //   picture: 'https://via.placeholder.com/50',
-  //   name: 'John Doe',
-  // };
-
-  const dummyReceiverId = 'test-user-123';
   const { isLoggedIn, user } = useAuth();
+  const {selectedUser} = useSelectedChat()
+    console.log('selectedUser', selectedUser)
+  console.log(user)
 
   return (
     <div className="flex flex-col h-full w-full ml-8">
@@ -21,10 +19,10 @@ const ChatComponent = () => {
             <>
               <img
                 src={
-                  user.picture ||
-                  `https://www.gravatar.com/avatar/${user.email}?d=identicon`
+                    selectedUser?.avatarUrl ||
+                  `https://www.gravatar.com/avatar/${selectedUser?.email}?d=identicon`
                 }
-                alt={user.name || 'Default User'}
+                alt={selectedUser?.displayName || 'Default User'}
                 className="w-10 h-10 rounded-full object-cover mr-3"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src =
@@ -33,23 +31,23 @@ const ChatComponent = () => {
               />
               <div className="ml-2">
                 <span className="block text-sm font-semibold dark:text-white">
-                  {user.name}
+                  {selectedUser?.displayName}
                 </span>
-                <span className="block text-xs ml-0 text-green-500">
-                  Online
+                <span className="block text-xs ml-0 text-green-500">{selectedUser?.status}
+
                 </span>
               </div>
             </>
           )}
         </div>
         <div className="flex items-center h-full space-x-4">
-          <PhoneOutlined className="text-gray-600 dark:text-gray-400 cursor-pointer" />
-          <VideoCameraOutlined className="text-gray-600 dark:text-gray-400 cursor-pointer" />
+          <Phone size={18} className="text-gray-600 dark:text-gray-400 cursor-pointer" />
+          <Video size={18} className="text-gray-600 dark:text-gray-400 cursor-pointer" />
         </div>
       </div>
 
       <ChatMessage user={user} />
-      <ChatInput senderId={user?.sub} receiverId={dummyReceiverId} />
+      <ChatInput senderId={user?.sub} receiverId={selectedUser?._id} />
     </div>
   );
 };

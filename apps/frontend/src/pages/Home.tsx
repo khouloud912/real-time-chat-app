@@ -1,9 +1,10 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import Sidebar from '../components/Sidebars/Sidebar';
+import Sidebar from '../components/sidebars/Sidebar';
 import { useState } from 'react';
-import ContactSidebar from '../components/Sidebars/contacts/ContactSidebar';
-import MeetingSidebar from '../components/Sidebars/meetings/MeetingSidebar';
-import ChatComponent from '../components/Chat/ChatComponent';
+import ContactSidebar from '../components/sidebars/contacts/ContactSidebar';
+import MeetingSidebar from '../components/sidebars/meetings/MeetingSidebar';
+import ChatComponent from '../components/chat/ChatComponent';
+import {SelectedChatProvider} from "../contexts/selectedChatContext.tsx";
 
 const Home = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -24,6 +25,7 @@ const Home = () => {
   };
 
   return (
+      <SelectedChatProvider>
     <div className={`flex ${darkMode ? 'dark' : ''} h-screen`}>
       <div className="flex-none w-9">
         <Sidebar
@@ -33,14 +35,15 @@ const Home = () => {
       </div>
       {sidebarsVisible && (
         <div className=" flex flex-col ml-16">
-          <ContactSidebar onContactClick={handleContactClick} />
-          <MeetingSidebar onContactClick={handleContactClick} />
+          <ContactSidebar  />
+          <MeetingSidebar  />
         </div>
       )}
       {/* <div className={`flex-1 ${chatVisible ? 'block' : 'hidden'} `}> */}
       <ChatComponent />
       {/* </div> */}
     </div>
+      </SelectedChatProvider>
   );
 };
 

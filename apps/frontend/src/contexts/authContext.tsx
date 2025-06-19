@@ -1,6 +1,6 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import {createContext, useContext, useState, useEffect, useCallback} from 'react';
 import { LogoutOptions, useAuth0 } from '@auth0/auth0-react';
-import { register } from '../api/authApi';
+import {useRegister} from "../api/authApi.ts";
 
 interface AuthContextProps {
   login: () => Promise<void>;
@@ -8,6 +8,7 @@ interface AuthContextProps {
   getToken: () => Promise<string | undefined>;
   isLoggedIn: () => boolean;
   user: any;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -19,9 +20,11 @@ export const AuthProvider = ({ children }: any) => {
     getAccessTokenSilently,
     isAuthenticated,
     user,
+      isLoading
   } = useAuth0();
 
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const { mutate: registerUser } = useRegister();
 
   const login = async () => {
     await loginWithRedirect({
@@ -42,20 +45,20 @@ export const AuthProvider = ({ children }: any) => {
     return expirationTime < Date.now(); // Check if the token has expired
   };
 
-  const getToken = async () => {
+  const getToken = useCallback(async () => {
     if (accessToken && !isTokenExpired(accessToken)) {
       return accessToken;
     }
 
     try {
       const token = await getAccessTokenSilently();
-      setAccessToken(token); // Store the new token in memory
+      setAccessToken(token);
       return token;
     } catch (error) {
       console.error('Error getting token: ', error);
       return undefined;
     }
-  };
+  }, [accessToken, getAccessTokenSilently]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -64,27 +67,14 @@ export const AuthProvider = ({ children }: any) => {
       }
     }, 600000); // Refresh every 10 minutes (600000 ms)
 
-    return () => clearInterval(interval); // Cleanup on unmount
+    return () => clearInterval(interval);
   }, [isAuthenticated]);
 
   useEffect(() => {
-    const registerUser = async () => {
-      if (user) {
-        try {
-          // Log user details to ensure you are sending the right data to register
-          console.log('Registering user:', user);
-          const response = await register(user); // Assuming this is the right registration API
-          console.log('User registered:', response);
-        } catch (error) {
-          console.error('Error registering user:', error);
-        }
-      }
-    };
-
     if (user) {
-      registerUser();
+      registerUser(user);
     }
-  }, [user]); // Only run when the user data is available
+  }, [user]);
 
   return (
     <AuthContext.Provider
@@ -94,6 +84,7 @@ export const AuthProvider = ({ children }: any) => {
         getToken,
         isLoggedIn: () => isAuthenticated,
         user,
+        isLoading
       }}
     >
       {children}
