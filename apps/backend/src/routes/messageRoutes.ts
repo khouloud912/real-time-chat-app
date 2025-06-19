@@ -4,11 +4,10 @@ import { sendMessage, getMessages, markMessageAsRead, typingIndicator, deleteMes
 const router = express.Router();
 
 // Save a new message
-router.post("/newMessage", sendMessage);
-router.get("/messages/:roomId", getMessages);
-router.get("/messages/:roomId", getMessages);
-router.post("/messages/typing", typingIndicator);
-router.put("/messages/read", markMessageAsRead);
-router.put("/messages/:messageId", deleteMessage);
+router.post("/", sendMessage);
+router.get("/", getMessages);
+router.post("/typing", typingIndicator);
+router.put("/read", markMessageAsRead);
+router.put("/:messageId", deleteMessage);
 
 export default router;

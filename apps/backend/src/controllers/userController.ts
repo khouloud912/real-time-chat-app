@@ -1,6 +1,25 @@
 import Message from "../models/Message";
 import User from "../models/User";
 
+export const getConnectedUser = async (req: any, res: any) => {
+  try {
+    const auth0Id = req.auth?.sub;
+
+    if (!auth0Id) {
+      return res.status(400).json({ message: "Missing user ID in token" });
+    }
+    const user = await User.findOne({ auth0Id });
+    if (!user) {
+      return res.status(404).json({ message: "User not found in database" });
+    }
+
+    return res.status(200).json(user);
+  } catch (err) {
+    console.error("Error fetching connected user:", err);
+    return res.status(500).json({ message: "Failed to fetch user" });
+  }
+};
+
 // Fetch all users
 export const getUsers = async (req: any, res: any) => {
   try {

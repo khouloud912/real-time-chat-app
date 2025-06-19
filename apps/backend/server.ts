@@ -26,7 +26,7 @@ app.use("/messages", messageRoutes);
 app.use("/users", userRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Chat Server Running");
+  res.send("chat Server Running");
 });
 
 server.listen(PORT, () => {
