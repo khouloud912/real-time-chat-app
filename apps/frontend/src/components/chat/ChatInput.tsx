@@ -1,21 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
-  SmileOutlined,
-  CameraOutlined,
-  PaperClipOutlined,
-  AudioOutlined,
-  SendOutlined,
-  StopOutlined,
-  DeleteOutlined,
-  FilePdfOutlined,
-  CloseCircleFilled,
-} from '@ant-design/icons';
+  Smile,
+  Camera,
+  Paperclip,
+  Mic,
+  Send,
+  Square,
+  Trash2,
+  FileText,
+  XCircle,
+} from 'lucide-react';
 import EmojiPicker from 'emoji-picker-react';
-
 import WaveSurfer from 'wavesurfer.js';
-import { addMessage } from '../../api/messageApi';
+import {useAddMessage} from '../../api/messageApi';
 
 export const ChatInput = ({ senderId, receiverId }: any) => {
+  console.log('ChatInput senderId', senderId,receiverId);
   const [message, setMessage] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
@@ -30,13 +30,22 @@ export const ChatInput = ({ senderId, receiverId }: any) => {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
 
+  const addMessageMutation = useAddMessage();
+
   const handleSendMessage = () => {
     if (message.trim()) {
       const messageData: any = { senderId, receiverId, message };
       if (selectedFile) messageData.file = selectedFile;
       if (selectedImage) messageData.image = selectedImage.url;
 
-      addMessage(messageData);
+      addMessageMutation.mutate(messageData, {
+        onSuccess: (data) => {
+          console.log('Message added successfully:', data);
+        },
+        onError: (error) => {
+          console.error('Failed to add message:', error);
+        }
+      });
       setMessage('');
     }
   };
@@ -179,19 +188,19 @@ export const ChatInput = ({ senderId, receiverId }: any) => {
           </span>
 
           {/* Stop Recording Button */}
-          <StopOutlined
+          <Square
             onClick={stopRecording}
             className="text-blue-500 text-xl ml-4 cursor-pointer"
           />
 
           {/* Discard Recording Button */}
-          <DeleteOutlined
+          <Trash2
             onClick={discardRecording}
             className="text-red-500 text-xl ml-4 cursor-pointer"
           />
 
           {/* Send Recording Button */}
-          <SendOutlined
+          <Send
             onClick={sendRecording}
             className="text-green-500 text-xl ml-4 cursor-pointer"
           />
@@ -199,21 +208,21 @@ export const ChatInput = ({ senderId, receiverId }: any) => {
       ) : (
         <div className="flex items-center w-full rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2">
           {/* Emoji Picker Icon */}
-          <SmileOutlined
+          <Smile
             onClick={() => setShowEmojiPicker((prev) => !prev)}
             className="text-gray-500 dark:text-gray-400 cursor-pointer text-xl mr-3"
           />
           {selectedFile && (
             <div className="relative flex items-center mt-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">
               {/* Close Button */}
-              <CloseCircleFilled
+              <XCircle
                 onClick={() => setSelectedFile(null)}
                 className="absolute top-0 right-0 text-black-500 text-sm cursor-pointer hover:text-black-700 transition-all duration-200"
               />
 
               {/* PDF Icon and File Name */}
               <div className="flex items-center space-x-2">
-                <FilePdfOutlined className="text-pink-500 text-lg" />
+                <FileText className="text-pink-500 text-lg" />
                 <span className="text-gray-700 dark:text-gray-300 text-sm truncate">
                   {selectedFile.name}
                 </span>
@@ -224,7 +233,7 @@ export const ChatInput = ({ senderId, receiverId }: any) => {
           {selectedImage && (
             <div className="relative flex items-center mt-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">
               {/* Close Button */}
-              <CloseCircleFilled
+              <XCircle
                 onClick={() => setSelectedImage(null)}
                 className="absolute top-0 right-0 text-black-500 text-sm cursor-pointer hover:text-black-700 transition-all duration-200"
               />
@@ -255,14 +264,15 @@ export const ChatInput = ({ senderId, receiverId }: any) => {
           />
 
           {/* Audio Recording Icon */}
-          <AudioOutlined
+          <Mic
             onClick={startRecording}
+            size={20}
             className="text-gray-500 dark:text-gray-400 cursor-pointer text-xl ml-2"
           />
 
           {/* File Attachment Icon */}
           <label htmlFor="file-upload">
-            <PaperClipOutlined className="text-gray-500 dark:text-gray-400 cursor-pointer text-xl mx-2" />
+            <Paperclip size={20} className="text-gray-500 dark:text-gray-400 cursor-pointer text-xl mx-2" />
           </label>
           <input
             id="file-upload"
@@ -274,7 +284,7 @@ export const ChatInput = ({ senderId, receiverId }: any) => {
 
           {/* Camera Icon */}
           <label htmlFor="image-upload">
-            <CameraOutlined className="text-gray-500 dark:text-gray-400 cursor-pointer text-xl mx-2" />
+            <Camera  size={20} className="text-gray-500 dark:text-gray-400 cursor-pointer text-xl mx-2" />
           </label>
           <input
             id="image-upload"

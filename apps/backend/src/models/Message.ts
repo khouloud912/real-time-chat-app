@@ -5,7 +5,7 @@ const messageSchema = new mongoose.Schema({
   receiverId: { type: String, required: true }, // User sending the message
   message: { type: String, required: true }, // Message content
   read: { type: Boolean }, // Message content
-  roomId: { type: String }, // Chat room or conversation ID
+  roomId: { type: String }, // chat room or conversation ID
   timestamp: { type: Date, default: Date.now }, // Timestamp for the message
   deleted: { type: Boolean },
 });

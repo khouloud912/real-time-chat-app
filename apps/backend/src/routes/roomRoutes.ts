@@ -6,14 +6,11 @@ import {
 } from "../controllers/roomController";
 
 const router = express.Router();
-
 // Create a new room
-router.post("/rooms", createRoom);
-
+router.post("/", createRoom);
 // Join a room
-router.post("/rooms/join", joinRoom);
-
+router.post("/join", joinRoom);
 // Send a message to a room
-router.post("/rooms/messages", sendMessageToRoom);
+router.post("/messages", sendMessageToRoom);
 
 export default router;

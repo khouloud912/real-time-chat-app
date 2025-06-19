@@ -1,8 +1,5 @@
-import {
-  PlusCircleOutlined,
-  PhoneOutlined,
-  VideoCameraOutlined,
-} from '@ant-design/icons';
+import { Phone, Video , PlusCircle} from 'lucide-react';
+import UserImage from '../../../assets/images/user.png';
 
 const MeetingSidebar = ({ onContactClick }: any) => {
   const contacts = [
@@ -11,21 +8,24 @@ const MeetingSidebar = ({ onContactClick }: any) => {
       name: 'John Doe',
       lastMessage: 'Hey, how are you?',
       messageCount: 3,
-      imageUrl: 'https://via.placeholder.com/50',
+      email:'johnDoe@gmail.com',
+      imageUrl:  UserImage,
     },
     {
       id: 2,
       name: 'Jane Smith',
       lastMessage: "Let's catch up later.",
       messageCount: 1,
-      imageUrl: 'https://via.placeholder.com/50',
+      email:'janeSmith@gmail.com',
+      imageUrl: UserImage,
     },
     {
       id: 3,
       name: 'Fake Contact',
       lastMessage: 'This is a fake contact.',
       messageCount: 0,
-      imageUrl: 'https://via.placeholder.com/50',
+      email: 'fakeContact@gmail.com',
+      imageUrl:  UserImage,
     },
   ];
 
@@ -37,7 +37,7 @@ const MeetingSidebar = ({ onContactClick }: any) => {
           Calls
         </h1>
         <div className="flex items-center">
-          <PlusCircleOutlined className="text-sm sm:text-md dark:text-white" />
+          <PlusCircle className="text-sm sm:text-md dark:text-white" />
           <h1 className="ml-2 text-sm sm:text-md font-semibold dark:text-white">
             New Meet
           </h1>
@@ -63,8 +63,8 @@ const MeetingSidebar = ({ onContactClick }: any) => {
                   {contact.name}
                 </span>
                 <div className="flex space-x-2 text-gray-600 dark:text-gray-400">
-                  <PhoneOutlined className="text-xs sm:text-sm cursor-pointer" />
-                  <VideoCameraOutlined className="text-xs sm:text-sm cursor-pointer" />
+                  <Phone size={17} className="text-xs sm:text-sm cursor-pointer" />
+                  <Video size={17} className="text-xs sm:text-sm cursor-pointer" />
                 </div>
               </div>
               <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">

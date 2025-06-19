@@ -23,17 +23,35 @@ export const sendMessage = async (req: any, res: any) => {
   }
 };
 
+
 // Get chat history for a room
 export const getMessages = async (req: any, res: any) => {
-  const { roomId } = req.params;
+  const { senderId, receiverId, roomId } = req.query;
 
   try {
-    const messages = await Message.find({ roomId }).sort({ timestamp: 1 });
-    return res.status(200).json(messages);
-  } catch (error: any) {
+    if (senderId && receiverId) {
+      const messages = await Message.find({
+        $or: [
+          { senderId, receiverId },
+          { senderId: receiverId, receiverId: senderId }
+        ]
+      }).sort({ createdAt: 1 });
+
+      return res.status(200).json(messages);
+    }
+
+    if (roomId) {
+      const messages = await Message.find({ roomId }).sort({ timestamp: 1 });
+      return res.status(200).json(messages);
+    }
     return res
-      .status(500)
-      .json({ error: "Failed to retrieve messages", details: error.message });
+        .status(400)
+        .json({ error: "You must provide either senderId & receiverId or roomId" });
+  } catch (error: any) {
+    return res.status(500).json({
+      error: "Failed to retrieve messages",
+      details: error.message
+    });
   }
 };
 
