@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import UserTab from './UserTab';
-import { useAuth } from '../../../auth/authContext';
+import { useAuth } from '../../../contexts/authContext.tsx';
 import ChatTab from './ChatTab';
 import SearchInput from '../Search';
 

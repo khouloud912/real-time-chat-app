@@ -1,43 +1,19 @@
-import { useEffect, useState } from 'react';
-import { getUsers } from '../../../api/userApi';
-import { useAuth } from '../../../auth/authContext';
+import { useAuth } from '../../../contexts/authContext.tsx';
+import {useUsers} from "../../../api/userApi.ts";
+import {useMemo} from "react";
 
 const UserTab = ({ onContactClick, searchQuery }: any) => {
-  const [users, setUsers] = useState<any[]>([]);
-  const [filteredUsers, setFilteredUsers] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const { getToken } = useAuth();
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      setLoading(true);
-      try {
-        const data = await getUsers(getToken);
-        setUsers(data);
-        setFilteredUsers(data); // Initialize filtered users with all users
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUsers();
-  }, []);
-
-  // Update filteredUsers when searchQuery changes
-  useEffect(() => {
-    if (searchQuery.trim() === '') {
-      setFilteredUsers(users); // Reset to all users if query is empty
-    } else {
-      setFilteredUsers(
-        users.filter((user) =>
-          user.displayName.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      );
-    }
+  const { data: users, isLoading, isError } = useUsers();
+   console.log('users', users);
+  const filteredUsers = useMemo(() => {
+    if (!searchQuery.trim()) return users;
+    return users.filter((user: any) =>
+        user.displayName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
   }, [searchQuery, users]);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="text-center text-gray-500 dark:text-gray-400">
         Loading...
@@ -65,7 +41,7 @@ const UserTab = ({ onContactClick, searchQuery }: any) => {
           >
             <img
               className="w-10 h-10 rounded-full object-cover"
-              src={user.avatarUrl}
+              src={user.avatarUrl ? user.avatarUrl : `https://www.gravatar.com/avatar/${user.email}?d=identicon`}
               alt={user.name}
             />
             <div className="ml-2">

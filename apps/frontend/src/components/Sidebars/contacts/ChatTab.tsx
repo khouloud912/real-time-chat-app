@@ -1,42 +1,21 @@
-import { useEffect, useState } from 'react';
-import { getUsersWithChats } from '../../../api/userApi';
-import { useAuth } from '../../../auth/authContext';
+import {useMemo} from 'react';
+import {useUsersWithChats} from '../../../api/userApi';
+
 
 const ChatTab = ({ onContactClick, searchQuery }: any) => {
-  const [users, setUsers] = useState<any[]>([]);
-  const [filteredUsers, setFilteredUsers] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const { getToken } = useAuth();
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      setLoading(true);
-      try {
-        const data = await getUsersWithChats(getToken);
-        console.log('data', data);
-        setUsers(data);
-        setFilteredUsers(data);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUsers();
-  }, []);
 
-  useEffect(() => {
-    if (searchQuery.trim() === '') {
-      setFilteredUsers(users);
-    } else {
-      setFilteredUsers(
-        users.filter((user) =>
-          user.displayName.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      );
-    }
+  const { data: users = [], isLoading, isError } = useUsersWithChats();
+
+  const filteredUsers = useMemo(() => {
+    if (!searchQuery.trim()) return users;
+    return users.filter((user: any) =>
+        user.displayName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
   }, [searchQuery, users]);
-  if (loading) {
+
+
+  if (isLoading) {
     return (
       <div className="text-center text-gray-500 dark:text-gray-400">
         Loading...

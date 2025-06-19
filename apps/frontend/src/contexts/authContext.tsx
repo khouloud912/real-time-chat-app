@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { LogoutOptions, useAuth0 } from '@auth0/auth0-react';
-import { register } from '../api/authApi';
+import {useRegister} from "../api/authApi.ts";
 
 interface AuthContextProps {
   login: () => Promise<void>;
@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }: any) => {
   } = useAuth0();
 
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const { mutate: registerUser } = useRegister();
 
   const login = async () => {
     await loginWithRedirect({
@@ -68,23 +69,10 @@ export const AuthProvider = ({ children }: any) => {
   }, [isAuthenticated]);
 
   useEffect(() => {
-    const registerUser = async () => {
-      if (user) {
-        try {
-          // Log user details to ensure you are sending the right data to register
-          console.log('Registering user:', user);
-          const response = await register(user); // Assuming this is the right registration API
-          console.log('User registered:', response);
-        } catch (error) {
-          console.error('Error registering user:', error);
-        }
-      }
-    };
-
     if (user) {
-      registerUser();
+      registerUser(user);
     }
-  }, [user]); // Only run when the user data is available
+  }, [user]);
 
   return (
     <AuthContext.Provider

@@ -1,7 +1,8 @@
-import { PhoneOutlined, VideoCameraOutlined } from '@ant-design/icons';
+import { Phone, Video } from 'lucide-react';
 import { ChatInput } from '../Chat/ChatInput';
 import { ChatMessage } from './ChatMessage';
-import { useAuth } from '../../auth/authContext';
+import { useAuth } from '../../contexts/authContext.tsx';
+import UserImage from '../../assets/images/user.png';
 
 const ChatComponent = () => {
   // const user = {
@@ -43,8 +44,8 @@ const ChatComponent = () => {
           )}
         </div>
         <div className="flex items-center h-full space-x-4">
-          <PhoneOutlined className="text-gray-600 dark:text-gray-400 cursor-pointer" />
-          <VideoCameraOutlined className="text-gray-600 dark:text-gray-400 cursor-pointer" />
+          <Phone size={18} className="text-gray-600 dark:text-gray-400 cursor-pointer" />
+          <Video size={18} className="text-gray-600 dark:text-gray-400 cursor-pointer" />
         </div>
       </div>
 
