@@ -11,22 +11,25 @@ export const ChatMessage = ({ receiverId }: any) => {
   const [socketMessages, setSocketMessages] = useState<any[]>([]);
 
   useEffect(() => {
-    socket.on('receiveMessage', (newMessage) => {
-      // Add to local socket messages
-      setSocketMessages((prev) => [...prev, newMessage]);
+    const handleReceiveMessage = (newMessage: any) => {
+      // Ensure newMessage is an object with a message property
+      if (typeof newMessage === 'object' && newMessage?.message) {
+        setSocketMessages((prev) => [...prev, newMessage]);
 
-      // Or invalidate the query to refetch
-      queryClient.invalidateQueries({
-        queryKey: ['messages', user?.id, receiverId],
-      });
-    });
-
-    return () => {
-      socket.off('receiveMessage');
+        // Invalidate messages query to refetch
+        queryClient.invalidateQueries({
+          queryKey: ['messages', user?._id, receiverId],
+        });
+      } else {
+        console.warn('Invalid message received from socket:', newMessage);
+      }
     };
-  }, [user?._id, receiverId, queryClient]);
-  const allMessages = [...messages, ...socketMessages];
 
+    socket.on('receiveMessage', handleReceiveMessage);
+    return () => socket.off('receiveMessage', handleReceiveMessage);
+  }, [user?._id, receiverId, queryClient]);
+
+  const allMessages = [...messages, ...socketMessages];
   console.log('allMessages', allMessages);
   return (
     <div className="flex-1 overflow-y-auto bg-gray-100 dark:bg-gray-900 p-4">
@@ -35,10 +38,10 @@ export const ChatMessage = ({ receiverId }: any) => {
         <div key={index} className="flex items-start mb-4">
           <img
             src={
-              user?.picture ||
+              user?.avatarUrl ||
               `https://www.gravatar.com/avatar/${user.email}?d=identicon`
             }
-            alt={user.name}
+            alt={user.displayName}
             className="w-10 h-10 rounded-full object-cover mr-3"
           />
           <div>
