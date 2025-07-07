@@ -5,7 +5,6 @@ import './assets/styles/index.css';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './contexts/authContext.tsx';
 import { UserProvider } from './contexts/userContext.tsx';
-
 import { Auth0ProviderWithNavigate } from './providers/Auth0Provider.tsx';
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 

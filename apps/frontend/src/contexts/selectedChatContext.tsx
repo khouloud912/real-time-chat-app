@@ -1,16 +1,31 @@
-// SelectedChatContext.tsx
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, ReactNode } from 'react';
 
-const SelectedChatContext = createContext(null);
-
-export const SelectedChatProvider = ({ children }) => {
-    const [selectedUser, setSelectedUser] = useState(null);
-
-    return (
-        <SelectedChatContext.Provider value={{ selectedUser, setSelectedUser }}>
-            {children}
-        </SelectedChatContext.Provider>
-    );
+type SelectedChatContextType = {
+  selectedUser: any;
+  setSelectedUser: any;
 };
 
-export const useSelectedChat = () => useContext(SelectedChatContext);
+const SelectedChatContext = createContext<SelectedChatContextType | undefined>(
+  undefined
+);
+
+export const SelectedChatProvider = ({ children }: { children: ReactNode }) => {
+  const [selectedUser, setSelectedUser] = useState<any>(null);
+
+  return (
+    <SelectedChatContext.Provider value={{ selectedUser, setSelectedUser }}>
+      {children}
+    </SelectedChatContext.Provider>
+  );
+};
+
+// 4. Define the hook with a useful error message
+export const useSelectedChat = () => {
+  const context = useContext(SelectedChatContext);
+  if (!context) {
+    throw new Error(
+      'useSelectedChat must be used within a SelectedChatProvider'
+    );
+  }
+  return context;
+};

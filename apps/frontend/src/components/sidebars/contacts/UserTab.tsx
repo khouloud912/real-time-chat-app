@@ -1,18 +1,16 @@
-import { useAuth } from '../../../contexts/authContext.tsx';
-import {useUsers} from "../../../api/userApi.ts";
-import {useMemo} from "react";
-import {useSelectedChat} from "../../../contexts/selectedChatContext.tsx";
+import { useUsers } from '../../../api/userApi.ts';
+import { useMemo } from 'react';
+import { useSelectedChat } from '../../../contexts/selectedChatContext.tsx';
 
 const UserTab = ({ searchQuery }: any) => {
-  const { data: users, isLoading, isError } = useUsers();
-  const {setSelectedUser} = useSelectedChat();
+  const { data: users, isLoading } = useUsers();
+  const { setSelectedUser } = useSelectedChat();
   const filteredUsers = useMemo(() => {
     if (!searchQuery.trim()) return users;
     return users.filter((user: any) =>
-        user.displayName.toLowerCase().includes(searchQuery.toLowerCase())
+      user.displayName.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [searchQuery, users]);
-
 
   if (isLoading) {
     return (
@@ -34,7 +32,7 @@ const UserTab = ({ searchQuery }: any) => {
     <div className="flex flex-col h-full">
       {/* User List */}
       <div className="flex-1 flex flex-col p-2 space-y-2 overflow-auto">
-        {filteredUsers.map((user) => (
+        {filteredUsers.map((user: any) => (
           <div
             key={user._id}
             onClick={() => setSelectedUser(user)}
@@ -42,7 +40,10 @@ const UserTab = ({ searchQuery }: any) => {
           >
             <img
               className="w-10 h-10 rounded-full object-cover"
-              src={`https://www.gravatar.com/avatar/${user.email}?d=identicon`}
+              src={
+                user?.avatarUrl ||
+                `https://www.gravatar.com/avatar/${user.email}?d=identicon`
+              }
               alt={user.name}
             />
             <div className="ml-2">
