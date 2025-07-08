@@ -2,7 +2,7 @@ import { useState } from 'react';
 import UserTab from './UserTab';
 import { useAuth } from '../../../contexts/authContext.tsx';
 import ChatTab from './ChatTab';
-import SearchInput from '../Search';
+import SearchInput from '../../common/Search.tsx';
 
 const ContactSidebar = () => {
   const [activeTab, setActiveTab] = useState<'Users' | 'Chats' | 'Groups'>(

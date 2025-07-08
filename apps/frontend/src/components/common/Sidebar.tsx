@@ -1,5 +1,5 @@
 import { Save, Settings, Share2, Users } from 'lucide-react';
-import ToggleSwitch from '../ToggleSwitch';
+import ToggleSwitch from './ToggleSwitch.tsx';
 import { useState } from 'react';
 import { useAuth } from '../../contexts/authContext.tsx';
 import { useUser } from '../../contexts/userContext.tsx';

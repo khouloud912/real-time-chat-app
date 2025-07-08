@@ -12,6 +12,10 @@ export const getConnectedUser = async (req: any, res: any) => {
     if (!user) {
       return res.status(404).json({ message: "User not found in database" });
     }
+    console.log('111', user)
+    user.status = 'online';
+    await user.save();
+
 
     return res.status(200).json(user);
   } catch (err) {

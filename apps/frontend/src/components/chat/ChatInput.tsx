@@ -15,7 +15,6 @@ import WaveSurfer from 'wavesurfer.js';
 import {useAddMessage} from '../../api/messageApi';
 
 export const ChatInput = ({ senderId, receiverId }: any) => {
-  console.log('ChatInput senderId', senderId,receiverId);
   const [message, setMessage] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
@@ -58,8 +57,6 @@ export const ChatInput = ({ senderId, receiverId }: any) => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    console.log('file', file);
-
     if (file) {
       setSelectedFile(file);
       setMessage((prevMessage) =>

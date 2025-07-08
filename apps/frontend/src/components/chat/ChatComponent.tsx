@@ -8,6 +8,8 @@ const ChatComponent = () => {
     const { user } = useUser();
     const { selectedUser } = useSelectedChat();
     console.log('selectedUser', selectedUser);
+    console.log('user', user);
+
 
     return (
         <div className="flex flex-col h-full w-full ml-8">
@@ -46,7 +48,7 @@ const ChatComponent = () => {
                 </div>
             </div>
 
-            <ChatMessage receiverId={selectedUser?._id} />
+            <ChatMessage  />
             <ChatInput
                 senderId={user?._id}
                 receiverId={selectedUser ? selectedUser?._id : user?._id}
