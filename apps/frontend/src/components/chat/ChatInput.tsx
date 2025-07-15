@@ -58,8 +58,6 @@ export const ChatInput = ({ senderId, receiverId }: any) => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    console.log('file', file);
-
     if (file) {
       setSelectedFile(file);
       setMessage((prevMessage) =>

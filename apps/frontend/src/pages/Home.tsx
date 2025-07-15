@@ -1,5 +1,4 @@
-import { useAuth0 } from '@auth0/auth0-react';
-import Sidebar from '../components/sidebars/Sidebar';
+import Sidebar from '../components/common/Sidebar.tsx';
 import { useState } from 'react';
 import ContactSidebar from '../components/sidebars/contacts/ContactSidebar';
 import MeetingSidebar from '../components/sidebars/meetings/MeetingSidebar';

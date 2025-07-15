@@ -1,12 +1,8 @@
 import { Save, Settings, Share2, Users } from 'lucide-react';
-<<<<<<<< HEAD:apps/frontend/src/components/sidebars/Sidebar.tsx
-import ToggleSwitch from '../ToggleSwitch';
-========
-import ToggleSwitch from './ToggleSwitch.tsx';
->>>>>>>> adb0148b7c034d9f6d6c421d27ac0b1c85f6142e:apps/frontend/src/components/common/Sidebar.tsx
 import { useState } from 'react';
 import { useAuth } from '../../contexts/authContext.tsx';
 import { useUser } from '../../contexts/userContext.tsx';
+import ToggleSwitch from '../ToggleSwitch.tsx';
 
 interface SidebarProps {
   toggleDarkMode: () => void;

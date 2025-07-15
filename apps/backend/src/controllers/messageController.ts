@@ -15,7 +15,7 @@ export const sendMessage = async (req: any, res: any) => {
 
     await messageData.save();
     // Emit the message in real-time to the receiver
-    io.emit("receiveMessage", message);
+    io.emit("receiveMessage", messageData);
     return res.status(201).json(messageData);
   } catch (error) {
     console.error("Error sending message:", error);
