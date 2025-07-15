@@ -1,8 +1,8 @@
 import { Phone, Video } from 'lucide-react';
-import { ChatInput } from '../chat/ChatInput';
 import { ChatMessage } from './ChatMessage';
 import { useSelectedChat } from '../../contexts/selectedChatContext.tsx';
 import { useUser } from '../../contexts/userContext.tsx';
+import ChatInput from './input/ChatInput.tsx';
 
 const ChatComponent = () => {
     const { user } = useUser();
